@@ -1,9 +1,21 @@
-public class Main {
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+
+public class Main extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
+        primaryStage.setTitle("Monster Hunter Database");
+        primaryStage.setScene(new Scene(root, 900, 600));
+        primaryStage.show();
+    }
 
     public static void main(String[] args) {
-        DatabaseOperations db = new DatabaseOperations();
-
-        db.printAll(); // prints out all the table contents: id, name, sex, genus from the monsters table from the specified database
-
+        launch(args);
     }
 }

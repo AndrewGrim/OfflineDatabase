@@ -1,3 +1,4 @@
+import javafx.collections.ObservableList;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -42,9 +43,9 @@ public class DatabaseOperations {
         try (Connection conn = this.connect(); Statement stmt  = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)){
             // loop through the result set
             while (rs.next()) {
-                System.out.println(rs.getInt("id") +  "\t\t\t" +
-                        rs.getString("name") + "\t\t\t\t\t" +
-                        rs.getString("sex") + "\t\t\t" +
+                System.out.println(rs.getInt("id") +  "\t" +
+                        rs.getString("name") + "\t" +
+                        rs.getString("sex") + "\t" +
                         rs.getString("genus"));
             }
         } catch (SQLException e) {
@@ -75,4 +76,25 @@ public class DatabaseOperations {
             System.out.println(e.getMessage());
         }
     }
+
+    public void setTableView(ObservableList<Monster> oblist){
+        String sql = "SELECT id, name, sex, genus FROM monsters";
+        // "select * from data" instead of sql??
+
+        try (Connection conn = this.connect(); Statement stmt  = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)){
+            // loop through the result set
+            while (rs.next()) {
+                oblist.add(new Monster(
+                        rs.getString("id"), // maybe change to int
+                        rs.getString("name"),
+                        rs.getString("sex"),
+                        rs.getString("genus")));
+                // might need to executeUpdate()
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+
 }
