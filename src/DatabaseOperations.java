@@ -85,7 +85,7 @@ public class DatabaseOperations {
             // loop through the result set
             while (rs.next()) {
                 oblist.add(new Monster(
-                        rs.getString("id"), // maybe change to int
+                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("sex"),
                         rs.getString("genus")));

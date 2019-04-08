@@ -14,10 +14,11 @@ public class Controller implements Initializable {
 
     public Button addMonster;
     public TableView<Monster> table;
-    public TableColumn<Monster, String> col_id;
+    public TableColumn<Monster, String> col_id; // could be trouble??
     public TableColumn<Monster, String> col_name;
     public TableColumn<Monster, String> col_sex;
     public TableColumn<Monster, String> col_genus;
+    public TextField idEntry;
     public TextField nameEntry;
     public TextField sexEntry;
     public TextField genusEntry;
@@ -38,7 +39,13 @@ public class Controller implements Initializable {
     }
 
     public void addMonsterClicked() {
-        DatabaseOperations db = new DatabaseOperations();
-        db.insert(nameEntry.getText(), sexEntry.getText(), genusEntry.getText());
+        if (nameEntry.getLength() == 0) {
+            System.out.println("You should probably enter a name if you want to submit new data!");
+
+        } else {
+            DatabaseOperations db = new DatabaseOperations();
+
+            db.insert(nameEntry.getText(), sexEntry.getText(), genusEntry.getText());
+        }
     }
 }
