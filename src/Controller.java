@@ -46,6 +46,9 @@ public class Controller implements Initializable {
             DatabaseOperations db = new DatabaseOperations();
 
             db.insert(nameEntry.getText(), sexEntry.getText(), genusEntry.getText());
+            db.setTableView(oblist);
+
+            table.setItems(oblist);
         }
     }
 }
