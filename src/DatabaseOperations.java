@@ -25,8 +25,10 @@ public class DatabaseOperations {
         String sql = "CREATE TABLE IF NOT EXISTS monsters (\n"
                 + "	id integer PRIMARY KEY,\n"
                 + "	name text NOT NULL,\n"
-                + " sex text NOT NULL, \n"
-                + "	genus text NOT NULL\n"
+                + " gender text NOT NULL, \n"
+                + "	species text NOT NULL\n"
+                + "	generation text NOT NULL\n"
+                + "	icon text NOT NULL\n"
                 + ");";
 
         try (Connection conn = this.connect(); Statement stmt = conn.createStatement()){
@@ -38,28 +40,31 @@ public class DatabaseOperations {
     }
 
     public void printAll(){
-        String sql = "SELECT id, name, sex, genus FROM monsters";
+        String sql = "SELECT id, name, gender, species, generation, icon FROM monsters";
 
         try (Connection conn = this.connect(); Statement stmt  = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)){
             // loop through the result set
             while (rs.next()) {
                 System.out.println(rs.getInt("id") +  "\t" +
                         rs.getString("name") + "\t" +
-                        rs.getString("sex") + "\t" +
-                        rs.getString("genus"));
+                        rs.getString("gender") + "\t" +
+                        rs.getString("species") + "\t" +
+                        rs.getString("icon"));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void insert(String name, String sex, String genus) {
-        String sql = "INSERT INTO monsters(name,sex,genus) VALUES(?,?,?)";
+    public void insert(String name, String gender, String species, String generation, String icon) {
+        String sql = "INSERT INTO monsters(name,gender,species,generation,icon) VALUES(?,?,?,?,?)";
 
         try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, name);
-            pstmt.setString(2, sex);
-            pstmt.setString(3, genus);
+            pstmt.setString(2, gender);
+            pstmt.setString(3, species);
+            pstmt.setString(4, generation);
+            pstmt.setString(5, icon);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -78,7 +83,7 @@ public class DatabaseOperations {
     }
 
     public void setTableView(ObservableList<Monster> oblist){
-        String sql = "SELECT id, name, sex, genus FROM monsters";
+        String sql = "SELECT id, name, gender, species, generation, icon FROM monsters";
         // "select * from data" instead of sql??
 
         try (Connection conn = this.connect(); Statement stmt  = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)){
@@ -87,9 +92,10 @@ public class DatabaseOperations {
                 oblist.add(new Monster(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("sex"),
-                        rs.getString("genus")));
-                // might need to executeUpdate()
+                        rs.getString("gender"),
+                        rs.getString("species"),
+                        rs.getString("generation"),
+                        rs.getString("icon")));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());

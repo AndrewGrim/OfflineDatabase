@@ -25,4 +25,5 @@ hs_err_pid*
 .idea/
 lib/
 out/
+images/
 *.iml
