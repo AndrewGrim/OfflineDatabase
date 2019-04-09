@@ -1,0 +1,55 @@
+1	Apceros	Undefined	Herbivore	1st
+2	Aptonoth	Undefined	Herbivore	1st
+3	Barnos	Undefined	Wingdrake	5th
+4	Gajalaka	Undefined	Lynian	5th
+5	Gajau	Undefined	Fish	5th
+6	Gastodon	Undefined	Herbivore	5th
+7	Girros	Undefined	Fanged Wyvern	5th
+8	Grimalkyne	Undefined	Lynian	5th
+9	Hornetaur	Undefined	Neopteron	5th
+10	Jagras	Undefined	Fanged Wyvern	5th
+11	Kelbi	Undefined	Herbivore	1st
+12	Kestodon Male	Undefined	Herbivore	5th
+13	Kestodon Female	Undefined	Herbivore	5th
+14	Mernos	Undefined	Wingdrake	5th
+15	Mosswine	Undefined	Herbivore	1st
+16	Noios	Undefined	Wingdrake	5th
+17	Raphinos	Undefined	Wingdrake	5th
+18	Shamos	Undefined	Fanged Wyvern	5th
+19	Vespoid	Undefined	Neopteron	1st
+20	Great Jagras	Undefined	Fanged Wyvern	5th
+21	Kulu-Ya-Ku	Undefined	Bird Wyvern	5th
+22	Pukei-Pukei	Undefined	Bird Wyvern	5th
+23	Barroth	Undefined	Brute Wyvern	3rd
+24	Jyuratodus	Undefined	Piscine Wyvern	5th
+25	Tobi-Kadachi	Undefined	Fanged Wyvern	5th
+26	Anjanath	Undefined	Brute Wyvern	5th
+27	Rathian	Female	Flying Wyvern	1st
+28	Tzitzi-Ya-Ku	Undefined	Bird Wyvern	5th
+29	Paolumu	Undefined	Flying Wyvern	5th
+30	Great Girros	Undefined	Fanged Wyvern	5th
+31	Radobaan	Undefined	Brute Wyvern	5th
+32	Legiana	Undefined	Flying Wyvern	5th
+33	Odogaron	Undefined	Fanged Wyvern	5th
+34	Rathalos	Male	Flying Wyvern	1st
+35	Diablos	Both	Flying Wyvern	1st
+36	Kirin	Undefined	Elder Dragon	1st
+37	Zorah Magdaros	Undefined	Elder Dragon	5th
+38	Dodogama	Undefined	Fanged Wyvern	5th
+39	Pink Rathian	Female	Flying Wyvern	1st
+40	Bazelgeuse	Undefined	Flying Wyvern	5th
+41	Deviljho	Undefined	Brute Wyvern	3rd
+42	Lavasioth	Undefined	Piscine Wyvern	2nd
+43	Uragaan	Undefined	Brute Wyvern	3rd
+44	Azure Rathalos	Male	Flying Wyvern	1st
+45	Black Diablos	Female	Flying Wyvern	1st
+46	Nergigante	Undefined	Elder Dragon	5th
+47	Teostra	Male	Elder Dragon	2nd
+48	Kushala Daora	Undefined	Elder Dragon	2nd
+49	Vaal Hazak	Undefined	Elder Dragon	5th
+50	Xeno'jiva	Undefined	Elder Dragon	5th
+51	Kulve Taroth	Female	Elder Dragon	5th
+52	Lunastra	Female	Elder Dragon	2nd
+53	Behemoth	Undefined	Elder Dragon	5th
+54	Leshen	Undefined	Relict	5th
+55	Ancient Leshen	Undefined	Relict	5th

@@ -11,7 +11,7 @@ for item in dirList:
 	shutil.move(localDir + "\\" + item, localDir + "\\" + str(i) + ".png")
 	i += 1
 	
-i = 1
+i = 20
 for item in dirList:
 	shutil.move(localDir + "\\" + item, localDir + "\\" + str(i) + ".png")
 	i += 1

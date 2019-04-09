@@ -101,6 +101,8 @@ public class Controller implements Initializable {
         int id = m.getId();
         String iconPath = "images/" + id + ".png";
         System.out.println(iconPath);
+        System.out.println(m);
+        System.out.println(id);
 
         try {
             Image image = new Image(iconPath);
