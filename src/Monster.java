@@ -1,16 +1,16 @@
+import java.sql.Blob;
+
 public class Monster {
 
     int id; // might need to be integer not int??
-    String name, gender, species, generation, icon;
+    String name, gender, species, generation;
 
-    public Monster(int id, String name, String gender, String species, String generation, String icon) {
+    public Monster(int id, String name, String gender, String species, String generation) {
         this.id = id;
         this.name = name;
         this.gender = gender;
         this.species = species;
         this.generation = generation;
-        this.icon = icon;
-
     }
 
     public int getId() {
@@ -51,13 +51,5 @@ public class Monster {
 
     public void setGeneration(String generation) {
         this.generation = generation;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
     }
 }
