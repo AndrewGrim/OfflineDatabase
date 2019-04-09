@@ -37,10 +37,11 @@
                   <TableView fx:id="databaseTable" onMouseClicked="#loadMonsterIcon" prefHeight="0.0" prefWidth="898.0" tableMenuButtonVisible="true" GridPane.rowIndex="1" GridPane.rowSpan="2">
                     <columns>
                       <TableColumn fx:id="col_id" prefWidth="33.0" text="ID" />
-                      <TableColumn fx:id="col_name" minWidth="0.0" prefWidth="188.0" text="Name" />
-                        <TableColumn fx:id="col_gender" prefWidth="78.0" text="Gender" />
-                        <TableColumn fx:id="col_species" prefWidth="101.0" text="Species" />
-                        <TableColumn fx:id="col_generation" prefWidth="34.0" text="Gen" />
+                      <TableColumn fx:id="col_name" minWidth="0.0" prefWidth="149.0" text="Name" />
+                        <TableColumn fx:id="col_gender" prefWidth="85.0" text="Gender" />
+                        <TableColumn fx:id="col_species" prefWidth="70.0" text="Species" />
+                        <TableColumn fx:id="col_generation" prefWidth="42.0" text="Gen" />
+                        <TableColumn fx:id="col_size" prefWidth="56.0" text="Size" />
                     </columns>
                   </TableView>
                   <GridPane prefHeight="192.0" prefWidth="785.0">
@@ -53,6 +54,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="39.0" prefWidth="107.0" text="Name:" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
@@ -83,6 +85,12 @@
                         <ComboBox fx:id="generationCombo" prefHeight="63.0" prefWidth="346.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
                         <ComboBox fx:id="genderCombo" prefHeight="81.0" prefWidth="346.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                         <ComboBox fx:id="speciesCombo" prefHeight="74.0" prefWidth="346.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                        <Label layoutX="21.0" layoutY="129.0" text="Size:" GridPane.rowIndex="4">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="sizeCombo" layoutX="113.0" layoutY="123.0" prefHeight="63.0" prefWidth="346.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
                   </GridPane>
                   <Button fx:id="addMonster" mnemonicParsing="false" onAction="#addMonster" prefHeight="55.0" prefWidth="116.0" text="Add Monster" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">

@@ -16,11 +16,13 @@ public class Controller implements Initializable {
     public TableColumn<Monster, String> col_gender;
     public TableColumn<Monster, String> col_species;
     public TableColumn<Monster, String> col_generation;
+    public TableColumn<Monster, String> col_size;
 
     public TextField nameEntry;
     public ComboBox<String> genderCombo;
     public ComboBox<String> speciesCombo;
     public ComboBox<String> generationCombo;
+    public ComboBox<String> sizeCombo;
     public Button addMonster;
 
     public ImageView imageViewIcon;
@@ -37,6 +39,7 @@ public class Controller implements Initializable {
         col_gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
         col_species.setCellValueFactory(new PropertyValueFactory<>("species"));
         col_generation.setCellValueFactory(new PropertyValueFactory<>("generation"));
+        col_generation.setCellValueFactory(new PropertyValueFactory<>("size"));
 
         Image image = new Image(titleIconPath);
         imageViewIcon.setImage(image);
@@ -47,20 +50,25 @@ public class Controller implements Initializable {
         databaseTable.setItems(oblist);
 
         genderCombo.getItems().addAll(
-                "Male",
-                "Female",
                 "Both",
+                "Female",
+                "Male",
                 "Undefined"
         );
 
         speciesCombo.getItems().addAll(
+                "Bird Wyvern",
+                "Brute Wyvern",
+                "Elder Dragon",
                 "Flying Wyvern",
                 "Fanged Wyvern",
-                "Brute Wyvern",
-                "Bird Wyvern",
+                "Fish",
+                "Herbivore",
+                "Lynian",
+                "Neopteron",
                 "Piscine Wyvern",
-                "Elder Dragon",
-                "Relict"
+                "Relict",
+                "Wingdrake"
         );
 
         generationCombo.getItems().addAll(
@@ -69,6 +77,12 @@ public class Controller implements Initializable {
                 "3rd",
                 "4th",
                 "5th"
+        );
+
+        sizeCombo.getItems().addAll(
+                "Large",
+                "Small"
+
         );
     }
 
@@ -87,7 +101,7 @@ public class Controller implements Initializable {
 
             databaseTable.getItems().clear(); // cleans up the table to prevent duplicates
 
-            db.insert(nameEntry.getText(), genderCombo.getValue(), speciesCombo.getValue(), generationCombo.getValue());
+            db.insert(nameEntry.getText(), genderCombo.getValue(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue());
             db.setTableView(oblist);
 
             databaseTable.setItems(oblist);

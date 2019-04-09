@@ -24,6 +24,7 @@ public class DatabaseOperations {
                 + " gender text NOT NULL, \n"
                 + "	species text NOT NULL\n"
                 + "	generation text NOT NULL\n"
+                + " size text NOT NULL\n"
                 + ");";
 
         try (Connection conn = this.connect(); Statement stmt = conn.createStatement()) {
@@ -35,7 +36,7 @@ public class DatabaseOperations {
     }
 
     public void printAll() {
-        String sql = "SELECT id, name, gender, species, generation FROM monsters";
+        String sql = "SELECT id, name, gender, species, generation, size FROM monsters";
 
         try (Connection conn = this.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             // loop through the result set
@@ -43,21 +44,24 @@ public class DatabaseOperations {
                 System.out.println(rs.getInt("id") + "\t" +
                         rs.getString("name") + "\t" +
                         rs.getString("gender") + "\t" +
-                        rs.getString("species"));
+                        rs.getString("species") + "\t" +
+                        rs.getString("generation") + "\t" +
+                        rs.getString("size"));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public void insert(String name, String gender, String species, String generation) {
-        String sql = "INSERT INTO monsters(name,gender,species,generation) VALUES(?,?,?,?)";
+    public void insert(String name, String gender, String species, String generation, String size) {
+        String sql = "INSERT INTO monsters(name,gender,species,generation,size) VALUES(?,?,?,?,?)";
 
         try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, name);
             pstmt.setString(2, gender);
             pstmt.setString(3, species);
             pstmt.setString(4, generation);
+            pstmt.setString(5, size);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -76,7 +80,7 @@ public class DatabaseOperations {
     }
 
     public void setTableView(ObservableList<Monster> oblist) {
-        String sql = "SELECT id, name, gender, species, generation FROM monsters";
+        String sql = "SELECT id, name, gender, species, generation, size FROM monsters";
 
         try (Connection conn = this.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
             // loop through the result set
@@ -86,7 +90,8 @@ public class DatabaseOperations {
                         rs.getString("name"),
                         rs.getString("gender"),
                         rs.getString("species"),
-                        rs.getString("generation")));
+                        rs.getString("generation"),
+                        rs.getString("size")));
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
