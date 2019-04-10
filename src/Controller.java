@@ -18,13 +18,11 @@ public class Controller implements Initializable {
     public TableView<Monster> databaseTable;
     public TableColumn<Monster, String> col_id;
     public TableColumn<Monster, String> col_name;
-    public TableColumn<Monster, String> col_gender;
     public TableColumn<Monster, String> col_species;
     public TableColumn<Monster, String> col_generation;
     public TableColumn<Monster, String> col_size;
 
     public TextField nameEntry;
-    public ComboBox<String> genderCombo;
     public ComboBox<String> speciesCombo;
     public ComboBox<String> generationCombo;
     public ComboBox<String> sizeCombo;
@@ -46,7 +44,6 @@ public class Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
-        col_gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
         col_species.setCellValueFactory(new PropertyValueFactory<>("species"));
         col_generation.setCellValueFactory(new PropertyValueFactory<>("generation"));
         col_size.setCellValueFactory(new PropertyValueFactory<>("size"));
@@ -58,13 +55,6 @@ public class Controller implements Initializable {
         db.setTableView(oblist);
 
         databaseTable.setItems(oblist);
-
-        genderCombo.getItems().addAll(
-                "Both",
-                "Female",
-                "Male",
-                "Undefined"
-        );
 
         speciesCombo.getItems().addAll(
                 "Bird Wyvern",
@@ -99,8 +89,6 @@ public class Controller implements Initializable {
     public void addNewMonster() {
         if (nameEntry.getLength() == 0) {
             System.out.println("You should probably enter a name if you want to submit new data!");
-        } else if (genderCombo.getValue() == null) {
-            System.out.println("You should probably enter a gender if you want to submit new data!");
         } else if (speciesCombo.getValue() == null) {
             System.out.println("You should probably enter a species if you want to submit new data!");
         } else if (generationCombo.getValue() == null) {
@@ -110,7 +98,7 @@ public class Controller implements Initializable {
         } else {
             databaseTable.getItems().clear(); // cleans up the table to prevent duplicates
 
-            db.insertMonsters(nameEntry.getText(), genderCombo.getValue(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue());
+            db.insertMonsters(nameEntry.getText(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue());
             db.setTableView(oblist);
 
             databaseTable.setItems(oblist);
@@ -130,8 +118,6 @@ public class Controller implements Initializable {
         if (result.get() == ButtonType.OK){
             if (nameEntry.getLength() == 0) {
                 System.out.println("You should probably enter a name if you want to update data!");
-            } else if (genderCombo.getValue() == null) {
-                System.out.println("You should probably enter a gender if you want to update data!");
             } else if (speciesCombo.getValue() == null) {
                 System.out.println("You should probably enter a species if you want to update data!");
             } else if (generationCombo.getValue() == null) {
@@ -139,7 +125,7 @@ public class Controller implements Initializable {
             } else if (sizeCombo.getValue() == null) {
                 System.out.println("You should probably enter a size if you want to update data!");
             } else {
-                db.updateMonster(nameEntry.getText(), genderCombo.getValue(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue(), getMonsterID());
+                db.updateMonster(nameEntry.getText(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue(), getMonsterID());
                 statusLabel.setText("Monster ID: " + localID + " updated!");
                 refreshTableView();
             }
