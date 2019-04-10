@@ -2,13 +2,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import java.util.Optional;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+
 public class Controller implements Initializable {
+
+    public Label statusLabel;
 
     public TableView<Monster> databaseTable;
     public TableColumn<Monster, String> col_id;
@@ -24,6 +29,9 @@ public class Controller implements Initializable {
     public ComboBox<String> generationCombo;
     public ComboBox<String> sizeCombo;
     public Button addMonster;
+    public Button updateMonster;
+    public Button deleteMonster;
+    public Button changeTitleIcon;
 
     public ImageView imageViewIcon;
 
@@ -32,6 +40,8 @@ public class Controller implements Initializable {
 
     ObservableList<Monster> oblist = FXCollections.observableArrayList();
 
+    public DatabaseOperations db = new DatabaseOperations();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -39,7 +49,7 @@ public class Controller implements Initializable {
         col_gender.setCellValueFactory(new PropertyValueFactory<>("gender"));
         col_species.setCellValueFactory(new PropertyValueFactory<>("species"));
         col_generation.setCellValueFactory(new PropertyValueFactory<>("generation"));
-        col_generation.setCellValueFactory(new PropertyValueFactory<>("size"));
+        col_size.setCellValueFactory(new PropertyValueFactory<>("size"));
 
         Image image = new Image(titleIconPath);
         imageViewIcon.setImage(image);
@@ -86,7 +96,7 @@ public class Controller implements Initializable {
         );
     }
 
-    public void addMonster() {
+    public void addNewMonster() {
         if (nameEntry.getLength() == 0) {
             System.out.println("You should probably enter a name if you want to submit new data!");
         } else if (genderCombo.getValue() == null) {
@@ -95,10 +105,9 @@ public class Controller implements Initializable {
             System.out.println("You should probably enter a species if you want to submit new data!");
         } else if (generationCombo.getValue() == null) {
             System.out.println("You should probably enter a generation if you want to submit new data!");
+        } else if (sizeCombo.getValue() == null) {
+            System.out.println("You should probably enter a size if you want to submit new data!");
         } else {
-            //System.out.println("currently disabled!");
-            DatabaseOperations db = new DatabaseOperations();
-
             databaseTable.getItems().clear(); // cleans up the table to prevent duplicates
 
             db.insert(nameEntry.getText(), genderCombo.getValue(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue());
@@ -108,12 +117,41 @@ public class Controller implements Initializable {
         }
     }
 
+    public void updateSelectedMonster() {
+        // getMonsterID() based of that use the details from the boxes to update the db id row with given info
+        int localID = getMonsterID();
+
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Update this ID?");
+        alert.setContentText("Are you sure you want to update this Monster ID: " + localID + " in the database?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            if (nameEntry.getLength() == 0) {
+                System.out.println("You should probably enter a name if you want to update data!");
+            } else if (genderCombo.getValue() == null) {
+                System.out.println("You should probably enter a gender if you want to update data!");
+            } else if (speciesCombo.getValue() == null) {
+                System.out.println("You should probably enter a species if you want to update data!");
+            } else if (generationCombo.getValue() == null) {
+                System.out.println("You should probably enter a generation if you want to update data!");
+            } else if (sizeCombo.getValue() == null) {
+                System.out.println("You should probably enter a size if you want to update data!");
+            } else {
+                db.update(nameEntry.getText(), genderCombo.getValue(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue(), getMonsterID());
+                statusLabel.setText("Monster ID: " + localID + " updated!");
+                refreshTableView();
+            }
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
+    }
+
     public void loadMonsterIcon() {
         // get the row selected and from the id load the appropriate image of the monster
-        int index = databaseTable.getSelectionModel().getSelectedIndex();
-        Monster m = databaseTable.getItems().get(index);
-        int id = m.getId();
-        String iconPath = "images/" + id + ".png";
+        String iconPath = "images/" + getMonsterID() + ".png";
+        System.out.println("Monster ID: " + getMonsterID() + " Monster Name: " + db.getMonsterName(getMonsterID()));
 
         try {
             Image image = new Image(iconPath);
@@ -125,5 +163,45 @@ public class Controller implements Initializable {
             Image image = new Image(titleIconPath);
             imageViewIcon.setImage(image);
         }
+    }
+
+    public void deleteSelectedMonster() {
+        int localID = getMonsterID();
+
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation Dialog");
+        alert.setHeaderText("Delete this ID?");
+        alert.setContentText("Are you sure you want to delete this Monster ID: " + localID + " from the database?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            db.delete(getMonsterID());
+            statusLabel.setText("Monster ID: " + localID + " deleted!");
+            refreshTableView();
+        } else {
+            // ... user chose CANCEL or closed the dialog
+        }
+    }
+
+    public void setTitleIcon() {
+        // change the db field with current icon to the other one, and at the top of file read the current icon and its path from db
+    }
+
+    public int getMonsterID() {
+        resetStatusLabel();
+        int index = databaseTable.getSelectionModel().getSelectedIndex();
+        Monster m = databaseTable.getItems().get(index);
+        int id = m.getId();
+        return id;
+    }
+
+    public void refreshTableView() {
+        databaseTable.getItems().clear(); // cleans up the table to prevent duplicates
+        db.setTableView(oblist);
+        databaseTable.setItems(oblist);
+    }
+
+    public void resetStatusLabel() {
+        statusLabel.setText("");
     }
 }

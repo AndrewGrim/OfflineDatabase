@@ -97,4 +97,41 @@ public class DatabaseOperations {
             System.out.println(e.getMessage());
         }
     }
+    public void update(String name, String gender, String species, String generation, String size, int id) {
+        String sql = "UPDATE monsters SET name = ? , "
+        + "gender = ? , "
+        + "species = ? , "
+        + "generation = ? , "
+        + "size = ? "
+        + "WHERE id = ?"; // commmas hello??
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, name);
+            pstmt.setString(2, gender);
+            pstmt.setString(3, species);
+            pstmt.setString(4, generation);
+            pstmt.setString(5, size);
+            pstmt.setInt(6, id);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public String getMonsterName(int id) {
+        String sql = "SELECT name FROM monsters WHERE id = ?";
+        String monsterName = null;
+
+        try (Connection conn = this.connect()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+            monsterName = rs.getString("name");
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return monsterName;
+    }
 }

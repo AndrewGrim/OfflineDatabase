@@ -12,7 +12,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("gui.fxml"));
         primaryStage.setTitle("Monster Hunter Database");
-        primaryStage.getIcons().add(new Image("images/stageIcon.png"));
+        primaryStage.getIcons().add(new Image("/images/stageIcon.png"));
         primaryStage.setScene(new Scene(root, 900, 600));
         primaryStage.show();
     }
