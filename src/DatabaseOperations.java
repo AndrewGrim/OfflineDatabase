@@ -16,7 +16,7 @@ public class DatabaseOperations {
         return conn;
     }
 
-    public void createNewTable() {
+    public void createNewMonstersTable() {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS monsters (\n"
                 + "	id integer PRIMARY KEY,\n"
@@ -35,7 +35,24 @@ public class DatabaseOperations {
         }
     }
 
-    public void printAll() {
+    public void createNewTitleIconsTable() {
+        // SQL statement for creating a new table
+        String sql = "CREATE TABLE IF NOT EXISTS titleIcons (\n"
+                + "	id integer PRIMARY KEY,\n"
+                + "	name text NOT NULL,\n"
+                + " path text NOT NULL,\n"
+                + " icon integer NOT NULL\n"
+                + ");";
+
+        try (Connection conn = this.connect(); Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void printAllMonsters() {
         String sql = "SELECT id, name, gender, species, generation, size FROM monsters";
 
         try (Connection conn = this.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -53,7 +70,7 @@ public class DatabaseOperations {
         }
     }
 
-    public void insert(String name, String gender, String species, String generation, String size) {
+    public void insertMonsters(String name, String gender, String species, String generation, String size) {
         String sql = "INSERT INTO monsters(name,gender,species,generation,size) VALUES(?,?,?,?,?)";
 
         try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -68,8 +85,8 @@ public class DatabaseOperations {
         }
     }
 
-    public void delete(int id) {
-        String sql = "DELETE FROM monsters WHERE id = ?";
+    public void delete(String table, int id) {
+        String sql = "DELETE FROM " + table + " WHERE id = ?";
 
         try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
@@ -97,7 +114,7 @@ public class DatabaseOperations {
             System.out.println(e.getMessage());
         }
     }
-    public void update(String name, String gender, String species, String generation, String size, int id) {
+    public void updateMonster(String name, String gender, String species, String generation, String size, int id) {
         String sql = "UPDATE monsters SET name = ? , "
         + "gender = ? , "
         + "species = ? , "
@@ -133,5 +150,76 @@ public class DatabaseOperations {
             System.out.println(e.getMessage());
         }
         return monsterName;
+    }
+
+    public String getDefaultIconPath() {
+        int currentIcon = 1;
+        String sql = "SELECT path FROM titleIcons WHERE icon = ?";
+        String iconPath = null;
+
+        try (Connection conn = this.connect()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, currentIcon);
+            ResultSet rs = pstmt.executeQuery();
+            iconPath = rs.getString("path");
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return iconPath;
+    }
+
+    public String getDefaultIconName() {
+        String currentIconName = null;
+        int defaultName = 1;
+        String sql = "SELECT name FROM titleIcons WHERE icon = ?";
+
+        try (Connection conn = this.connect()) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, defaultName);
+            ResultSet rs = pstmt.executeQuery();
+            currentIconName = rs.getString("name");
+
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return currentIconName;
+    }
+
+    public void updateDefaultIcon(String defaultName) {
+        String sql = "UPDATE titleIcons SET icon = ? WHERE name = ?";
+        int defaultIcon = 1;
+        int tempIcon = 2;
+        int switchIcon = 0;
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, tempIcon);
+            pstmt.setString(2, defaultName);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        sql = "UPDATE titleIcons SET icon = ? WHERE icon = ?";
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, defaultIcon);
+            pstmt.setInt(2, switchIcon);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        sql = "UPDATE titleIcons SET icon = ? WHERE icon = ?";
+
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, switchIcon);
+            pstmt.setInt(2, tempIcon);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

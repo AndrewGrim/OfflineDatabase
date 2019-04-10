@@ -33,14 +33,14 @@ public class Controller implements Initializable {
     public Button deleteMonster;
     public Button changeTitleIcon;
 
-    public ImageView imageViewIcon;
-
-    public String titleIconPath = "images/mhw-title.png";
-    public String titleIceborneIconPath = "images/mhw-title-iceborne.png";
-
     ObservableList<Monster> oblist = FXCollections.observableArrayList();
 
     public DatabaseOperations db = new DatabaseOperations();
+
+    public ImageView imageViewIcon;
+
+    public String titleIconPath = db.getDefaultIconPath();
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -110,7 +110,7 @@ public class Controller implements Initializable {
         } else {
             databaseTable.getItems().clear(); // cleans up the table to prevent duplicates
 
-            db.insert(nameEntry.getText(), genderCombo.getValue(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue());
+            db.insertMonsters(nameEntry.getText(), genderCombo.getValue(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue());
             db.setTableView(oblist);
 
             databaseTable.setItems(oblist);
@@ -139,7 +139,7 @@ public class Controller implements Initializable {
             } else if (sizeCombo.getValue() == null) {
                 System.out.println("You should probably enter a size if you want to update data!");
             } else {
-                db.update(nameEntry.getText(), genderCombo.getValue(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue(), getMonsterID());
+                db.updateMonster(nameEntry.getText(), genderCombo.getValue(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue(), getMonsterID());
                 statusLabel.setText("Monster ID: " + localID + " updated!");
                 refreshTableView();
             }
@@ -150,7 +150,7 @@ public class Controller implements Initializable {
 
     public void loadMonsterIcon() {
         // get the row selected and from the id load the appropriate image of the monster
-        String iconPath = "images/" + getMonsterID() + ".png";
+        String iconPath = "images/" + db.getMonsterName(getMonsterID()) + ".png";
         System.out.println("Monster ID: " + getMonsterID() + " Monster Name: " + db.getMonsterName(getMonsterID()));
 
         try {
@@ -175,7 +175,7 @@ public class Controller implements Initializable {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
-            db.delete(getMonsterID());
+            db.delete("monsters", getMonsterID());
             statusLabel.setText("Monster ID: " + localID + " deleted!");
             refreshTableView();
         } else {
@@ -184,7 +184,20 @@ public class Controller implements Initializable {
     }
 
     public void setTitleIcon() {
-        // change the db field with current icon to the other one, and at the top of file read the current icon and its path from db
+        db.updateDefaultIcon(db.getDefaultIconName());
+        statusLabel.setText("Default title icon changed to: " + db.getDefaultIconName() + "!");
+        String iconPath = db.getDefaultIconPath();
+
+        try {
+            Image image = new Image(iconPath);
+            imageViewIcon.setImage(image);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.out.println("Title icon not found in the 'images' folder!");
+            Image image = new Image(titleIconPath);
+            imageViewIcon.setImage(image);
+        }
     }
 
     public int getMonsterID() {
