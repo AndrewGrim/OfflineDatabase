@@ -1,4 +1,5 @@
 public class Monster {
+    // monster class for reading and saving data to and from the database, used for populating the tableview
 
     int id;
     String name, species, generation, size;

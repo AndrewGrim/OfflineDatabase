@@ -5,7 +5,7 @@ import java.sql.*;
 public class DatabaseOperations {
 
     private Connection connect() {
-        // SQLite connection string
+        // SQLite connection string, connects to this specific database
         String url = "jdbc:sqlite:MonsterHunter.db";
         Connection conn = null;
         try {
@@ -17,7 +17,7 @@ public class DatabaseOperations {
     }
 
     public void createNewMonstersTable() {
-        // SQL statement for creating a new table
+        // SQL statement for creating a new monsters table
         String sql = "CREATE TABLE IF NOT EXISTS monsters (\n"
                 + "	id integer PRIMARY KEY,\n"
                 + "	name text NOT NULL,\n"
@@ -35,7 +35,7 @@ public class DatabaseOperations {
     }
 
     public void createNewTitleIconsTable() {
-        // SQL statement for creating a new table
+        // SQL statement for creating a new title icons table
         String sql = "CREATE TABLE IF NOT EXISTS titleIcons (\n"
                 + "	id integer PRIMARY KEY,\n"
                 + "	name text NOT NULL,\n"
@@ -52,6 +52,7 @@ public class DatabaseOperations {
     }
 
     public void printAllMonsters() {
+        // used for printing all monsters rows to the console
         String sql = "SELECT id, name, species, generation, size FROM monsters";
 
         try (Connection conn = this.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -68,7 +69,8 @@ public class DatabaseOperations {
         }
     }
 
-    public void insertMonsters(String name, String species, String generation, String size) {
+    public void insertMonster(String name, String species, String generation, String size) {
+        // insert a single monster with the specified data into the monsters table
         String sql = "INSERT INTO monsters(name,species,generation,size) VALUES(?,?,?,?)";
 
         try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -83,6 +85,7 @@ public class DatabaseOperations {
     }
 
     public void delete(String table, int id) {
+        // delete the specified id from the specified table
         String sql = "DELETE FROM " + table + " WHERE id = ?";
 
         try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -94,6 +97,7 @@ public class DatabaseOperations {
     }
 
     public void setTableView(ObservableList<Monster> oblist) {
+        // populates the tableview with all the monster data using the monster class, loops untill all db rows added
         String sql = "SELECT id, name, species, generation, size FROM monsters";
 
         try (Connection conn = this.connect(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
@@ -111,6 +115,7 @@ public class DatabaseOperations {
         }
     }
     public void updateMonster(String name, String species, String generation, String size, int id) {
+        // updates the database with the new details of the specified monster 
         String sql = "UPDATE monsters SET name = ? , "
         + "species = ? , "
         + "generation = ? , "
@@ -130,6 +135,7 @@ public class DatabaseOperations {
     }
 
     public String getMonsterName(int id) {
+        // returns the monsters name by looking up its id
         String sql = "SELECT name FROM monsters WHERE id = ?";
         String monsterName = null;
 
@@ -147,6 +153,7 @@ public class DatabaseOperations {
     }
 
     public String getDefaultIconPath() {
+        // checks the titleIcons table for a defualt icon and returns its path
         int currentIcon = 1;
         String sql = "SELECT path FROM titleIcons WHERE icon = ?";
         String iconPath = null;
@@ -165,6 +172,7 @@ public class DatabaseOperations {
     }
 
     public String getDefaultIconName() {
+        // checks the titleIcons table for a defualt icon and returns its name
         String currentIconName = null;
         int defaultName = 1;
         String sql = "SELECT name FROM titleIcons WHERE icon = ?";
@@ -183,6 +191,7 @@ public class DatabaseOperations {
     }
 
     public void updateDefaultIcon(String defaultName) {
+        // changes from the current default icon to a new one, swaps to the other one whenever called
         String sql = "UPDATE titleIcons SET icon = ? WHERE name = ?";
         int defaultIcon = 1;
         int tempIcon = 2;

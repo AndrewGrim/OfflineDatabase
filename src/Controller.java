@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+    // setup for different variables so they can be easily used by all the functions
     public Label statusLabel;
 
     public TableView<Monster> databaseTable;
@@ -42,12 +43,14 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // runs on startup populates the tableview with the data from the database
         col_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         col_name.setCellValueFactory(new PropertyValueFactory<>("name"));
         col_species.setCellValueFactory(new PropertyValueFactory<>("species"));
         col_generation.setCellValueFactory(new PropertyValueFactory<>("generation"));
         col_size.setCellValueFactory(new PropertyValueFactory<>("size"));
 
+        // loads the title icon
         Image image = new Image(titleIconPath);
         imageViewIcon.setImage(image);
 
@@ -56,6 +59,7 @@ public class Controller implements Initializable {
 
         databaseTable.setItems(oblist);
 
+        // gives all the options for the different comboboxes
         speciesCombo.getItems().addAll(
                 "Bird Wyvern",
                 "Brute Wyvern",
@@ -87,6 +91,7 @@ public class Controller implements Initializable {
     }
 
     public void addNewMonster() {
+        // check whether any fields are empty and adds a monster into the db using the entered values, reload tableview
         if (nameEntry.getLength() == 0) {
             System.out.println("You should probably enter a name if you want to submit new data!");
         } else if (speciesCombo.getValue() == null) {
@@ -98,7 +103,7 @@ public class Controller implements Initializable {
         } else {
             databaseTable.getItems().clear(); // cleans up the table to prevent duplicates
 
-            db.insertMonsters(nameEntry.getText(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue());
+            db.insertMonster(nameEntry.getText(), speciesCombo.getValue(), generationCombo.getValue(), sizeCombo.getValue());
             db.setTableView(oblist);
 
             databaseTable.setItems(oblist);
@@ -106,7 +111,7 @@ public class Controller implements Initializable {
     }
 
     public void updateSelectedMonster() {
-        // getMonsterID() based of that use the details from the boxes to update the db id row with given info
+        // grab the id of the currently selected monster and update its details in the db, reload tableview
         int localID = getMonsterID();
 
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -135,7 +140,7 @@ public class Controller implements Initializable {
     }
 
     public void loadMonsterIcon() {
-        // get the row selected and from the id load the appropriate image of the monster
+        // grabs the currently selected id, from that the monsters name and loads the icon for that monster
         String iconPath = "images/" + db.getMonsterName(getMonsterID()) + ".png";
         System.out.println("Monster ID: " + getMonsterID() + " Monster Name: " + db.getMonsterName(getMonsterID()));
 
@@ -152,6 +157,7 @@ public class Controller implements Initializable {
     }
 
     public void deleteSelectedMonster() {
+        // grabs the currently selected monster's id and deletes that monster from the db, reload tableview
         int localID = getMonsterID();
 
         Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -170,6 +176,7 @@ public class Controller implements Initializable {
     }
 
     public void setTitleIcon() {
+        // changes the default icon to the other one, also shows the newly selected icon in imageview
         db.updateDefaultIcon(db.getDefaultIconName());
         statusLabel.setText("Default title icon changed to: " + db.getDefaultIconName() + "!");
         String iconPath = db.getDefaultIconPath();
@@ -187,6 +194,7 @@ public class Controller implements Initializable {
     }
 
     public int getMonsterID() {
+        // returns the currently selected monster's id
         resetStatusLabel();
         int index = databaseTable.getSelectionModel().getSelectedIndex();
         Monster m = databaseTable.getItems().get(index);
@@ -195,12 +203,14 @@ public class Controller implements Initializable {
     }
 
     public void refreshTableView() {
+        // clears the table, loads the data from the db again and populates the tableview with the new info
         databaseTable.getItems().clear(); // cleans up the table to prevent duplicates
         db.setTableView(oblist);
         databaseTable.setItems(oblist);
     }
 
     public void resetStatusLabel() {
+        // changes the status label at the bottom to not display any messages
         statusLabel.setText("");
     }
 }
