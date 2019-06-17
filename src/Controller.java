@@ -151,7 +151,7 @@ public class Controller implements Initializable {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.out.println("Monster ID icon not found in the 'images' folder!");
-            Image image = new Image(titleIconPath);
+            Image image = new Image("images/Unknown.png");
             imageViewIcon.setImage(image);
         }
     }
